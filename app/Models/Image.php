@@ -11,7 +11,7 @@ class Image extends Model
 
     protected $table = 'images';
     protected $fillable = [
-        'id', 'url', 'product_id'
+        'id', 'image', 'product_id'
     ];
 
     public $timestamps = false;

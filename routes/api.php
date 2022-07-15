@@ -20,11 +20,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //Route::get('/create-webhook',[\App\Http\Controllers\ShopifyController::class,'createWebhook'])->name('get.webhook');
 
-Route::post('/create-webhook',[\App\Http\Controllers\ShopifyController::class,'createProduct'])->name('post.createWebhook');
+//Route::post('/create-webhook',[\App\Http\Controllers\ShopifyController::class,'createProduct'])->name('post.createWebhook');
+//
+//Route::get('/delete-webhook',[\App\Http\Controllers\ShopifyController::class,'deleteWebhook'])->name('get.deleteWebhook');
+//Route::post('/delete-webhook',[\App\Http\Controllers\ShopifyController::class,'deleteWebhookProduct']);
+//
+//Route::get('/update-webhook',[\App\Http\Controllers\ShopifyController::class,'updateWebhook'])->name('get.updateWebhook');
+//Route::post('/update-webhook',[\App\Http\Controllers\ShopifyController::class,'updateWebhookProduct']);
 
-Route::get('/delete-webhook',[\App\Http\Controllers\ShopifyController::class,'deleteWebhook'])->name('get.deleteWebhook');
-Route::post('/delete-webhook',[\App\Http\Controllers\ShopifyController::class,'deleteWebhookProduct']);
-
-Route::get('/update-webhook',[\App\Http\Controllers\ShopifyController::class,'updateWebhook'])->name('get.updateWebhook');
-Route::post('/update-webhook',[\App\Http\Controllers\ShopifyController::class,'updateWebhookProduct']);
-
+//Route Đăng kí ProductWebhook thêm, xóa sửa
+Route::post('/shopify/webhook', [\App\Http\Controllers\Shopify\WebHookController::class , 'webhook'] )->name('shopify.webhook');

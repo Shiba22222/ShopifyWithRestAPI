@@ -14,15 +14,17 @@ use Illuminate\Support\Facades\Log;
 class DeleteProductJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    private $request;
+
+    private $product;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct($product)
     {
-        $this->request = $request;
+        $this->product = $product;
     }
 
     /**
@@ -32,6 +34,9 @@ class DeleteProductJob implements ShouldQueue
      */
     public function handle()
     {
+        $product = $this->product;
 
+        $id = $product['id'];
+        Product::where('id', $id)->delete();
     }
 }

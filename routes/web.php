@@ -15,29 +15,44 @@ use App\Http\Controllers\ShopifyController;
 |
 */
 //Trang chủ
-Route::get('/',[ShopifyController::class,'index']);
+Route::get('/',[ShopifyController::class,'index'])
+    ->name('index');
 
 //Nhận thông tin access_token và bắt đầu xử lí các bước tiếp theo
 Route::any('/authen',[ShopifyController::class,'authen'])->name('authen');
 
-//Trang chủ cũng là trang nhập trên shopify
+//Trang chủ cũng là trang nhập tên shopify
 Route::any('/huskadian',[ShopifyController::class,'testShopify'])->name('huskadian');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function (){
+    //Trang chủ
+    Route::get('/',[ShopifyController::class,'index'])
+    ->name('index');
 
+    //Route hiển thị sản phẩm
     Route::get('/get-product',[\App\Http\Controllers\ProductController::class,'getProduct'])
         ->name('get.getProduct');
 
-    Route::get('/delete-product-app/{id}',[\App\Http\Controllers\ShopifyController::class,'deleteProductApp'])
+    //Route ấn vào để chuyển sang trang tạo sản phẩm
+    Route::get('/create-product-app',[\App\Http\Controllers\ProductController::class,'getCreateProductWebhook'])
+        ->name('get.createProduct');
+
+    //Route để lưu lại sản phẩm đã tạo vào DB và Shopify
+    Route::post('/create-product-app',[\App\Http\Controllers\ProductController::class,'postCreateProductWebhook'])
+        ->name('post.createProduct');
+
+    //Route xóa sản phẩm ở DB và Shopify
+    Route::get('/delete-product-app/{id}',[\App\Http\Controllers\ProductController::class,'deleteProductApp'])
         ->name('get.deleteProductApp');
 
-    Route::get('/update-product-app/{id}',[ShopifyController::class,'editProductApp'])
+    //Route ấn vào để chuyển sang trang sửa sản phẩm
+    Route::get('/update-product-app/{id}',[\App\Http\Controllers\ProductController::class,'editProductApp'])
         ->name('get.updateProductApp');
 
-    Route::post('/update-product-app/{id}',[ShopifyController::class,'updateWebhookProductApp'])
+    //Route để lưu sản phẩm đã được chỉnh sửa vào DB và Shopify
+    Route::post('/update-product-app/{id}',[\App\Http\Controllers\ProductController::class,'updateWebhookProductApp'])
         ->name('post.updateProductApp');
 });
 
-Route::get('/show',[\App\Http\Controllers\ShopifyController::class,'getShow'])->name('get.show');
 
 

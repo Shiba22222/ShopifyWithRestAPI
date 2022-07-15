@@ -16,15 +16,15 @@ use Illuminate\Support\Facades\Log;
 class CreateProduct implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    private $request;
+    private $product;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct($product)
     {
-        $this->request = $request;
+        $this->product = $product;
     }
 
     /**
@@ -34,7 +34,7 @@ class CreateProduct implements ShouldQueue
      */
     public function handle()
     {
-        $product = $this->request;
+        $product = $this->product;
 
         Product::create([
             'id' =>   $product['id'],
@@ -42,26 +42,26 @@ class CreateProduct implements ShouldQueue
             'title' => $product['title'],
         ]);
 
-        if ($product['variants']){
+        if (!empty($product['variants'])){
             foreach ($product['variants'] as $variant)
             {
                 Variants::create([
                     'id' => $variant['id'],
                     'price' => $variant['price'],
-                    'old_price' => $variant['compare_at_price'],
-                    'quantity' => $variant['inventory_quantity'],
+//                    'old_price' => $variant['compare_at_price'],
+//                    'quantity' => $variant['inventory_quantity'],
                     'product_id' => $variant['product_id'],
                 ]);
             }
         }
 
-        if ($product['images'])
+        if (!empty($product['images']))
         {
             foreach ($product['images'] as $image)
             {
                 Image::create([
                     'id' => $image['id'],
-                    'url' => $image['src'],
+                    'image' => $image['src'],
                     'product_id' => $image['product_id'],
                 ]);
             }

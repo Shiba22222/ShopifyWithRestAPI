@@ -14,6 +14,9 @@
                     <li>
                         <a href="{{route('admin.get.getProduct')}}">Sản phẩm</a>
                     </li>
+                    <li>
+                        <a href="{{route('admin.index')}}">Đăng kí Webhook Input</a>
+                    </li>
                 </ul>
             </li>
         </ul>

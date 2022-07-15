@@ -15,7 +15,7 @@
                 <div class="card-content">
                     <form action="">
                         <div class="card-body">
-                            {{--                            <a href="{{route('get.hacker')}}" class="btn btn-outline-primary">Bắt đầu lấy dữ liệu từ VNExpress</a>--}}
+                            <a href="{{route('admin.get.createProduct')}}" class="btn btn-outline-primary">Tạo sản phẩm</a>
                             {{--                            <a href="{{route('get.index')}}" class="btn btn-outline-success">Trang bài báo</a>--}}
                             {{--                            <label for="">Tìm kiếm:</label>--}}
                             {{--                            <input type="search" name="search" placeholder="Tìm kiếm" value="{{$searches}}">--}}
@@ -42,7 +42,7 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td>
                                         @foreach($item->image as $images)
-                                        <img src="{{$images->url}}" alt="" height="100px" width="120px">
+                                            <img src="{{$images->image}}" alt="" height="100px" width="120px">
                                         @endforeach
                                     </td>
                                     <td>{{$item->title}}</td>

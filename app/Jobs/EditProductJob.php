@@ -5,26 +5,21 @@ namespace App\Jobs;
 use App\Models\Image;
 use App\Models\Product;
 use App\Models\Variants;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 class EditProductJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-    private $request;
+    private $product;
+
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($request)
+    public function __construct($product)
     {
-        $this->request = $request;
+        $this->product = $product;
     }
 
     /**
@@ -34,35 +29,30 @@ class EditProductJob implements ShouldQueue
      */
     public function handle()
     {
-        $product = $this->request;
+        $product = $this->product;
+        $product_id = $product['id'];
 
-        Product::where('id', $product->input('id'))->update([
-            'id' =>    $product->input('id'),
-            'description' =>  $product->input('body_html'),
-            'title' =>  $product->input('title'),
+        Product::where('id', $product_id)->update([
+            'description' => $product['body_html'],
+            'title' => $product['title'],
         ]);
 
-        if ($product['variants']){
-            foreach ($product['variants'] as $variant)
-            {
-                Variants::update([
-                    'id' => $variant['id'],
-                    'price' => $variant['price'],
-                    'old_price' => $variant['compare_at_price'],
-                    'quantity' => $variant['inventory_quantity'],
-                    'product_id' => $variant['product_id'],
-                ]);
+        if ($product['variants']) {
+            $variants = $product['variants'];
+            foreach ($variants as $variant) {
+                Variants::where('product_id', $product_id)
+                    ->update([
+                        'price' => $variant['price'],
+                        'old_price' => $variant['compare_at_price'],
+                        'quantity' => $variant['inventory_quantity'],
+                    ]);
             }
         }
 
-        if ($product['images'])
-        {
-            foreach ($product['images'] as $image)
-            {
-                Image::update([
-                    'id' => $image['id'],
-                    'url' => $image['src'],
-                    'product_id' => $image['product_id'],
+        if ($product['images']) {
+            foreach ($product['images'] as $image) {
+                Image::where('product_id', $product_id)->update([
+                    'image' => $image['src']
                 ]);
             }
         }
